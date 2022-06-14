@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace csharp_bibliotecaMvc_due.Migrations
 {
-    public partial class FirstCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,14 +13,13 @@ namespace csharp_bibliotecaMvc_due.Migrations
                 name: "Autore",
                 columns: table => new
                 {
-                    AutoreId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cognome = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Cognome = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DataNascita = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Autore", x => x.AutoreId);
+                    table.PrimaryKey("PK_Autore", x => new { x.Cognome, x.Nome, x.DataNascita });
                 });
 
             migrationBuilder.CreateTable(
@@ -30,7 +29,7 @@ namespace csharp_bibliotecaMvc_due.Migrations
                     LibroID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titolo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Settore = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Settore = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Scaffale = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Stato = table.Column<int>(type: "int", nullable: false)
                 },
@@ -57,24 +56,26 @@ namespace csharp_bibliotecaMvc_due.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AutoriLibro",
+                name: "AutoreLibro",
                 columns: table => new
                 {
-                    AutoriAutoreId = table.Column<int>(type: "int", nullable: false),
-                    LibroID = table.Column<int>(type: "int", nullable: false)
+                    LibriLibroID = table.Column<int>(type: "int", nullable: false),
+                    AutoriCognome = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AutoriNome = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AutoriDataNascita = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AutoriLibro", x => new { x.AutoriAutoreId, x.LibroID });
+                    table.PrimaryKey("PK_AutoreLibro", x => new { x.LibriLibroID, x.AutoriCognome, x.AutoriNome, x.AutoriDataNascita });
                     table.ForeignKey(
-                        name: "FK_AutoriLibro_Autore_AutoriAutoreId",
-                        column: x => x.AutoriAutoreId,
+                        name: "FK_AutoreLibro_Autore_AutoriCognome_AutoriNome_AutoriDataNascita",
+                        columns: x => new { x.AutoriCognome, x.AutoriNome, x.AutoriDataNascita },
                         principalTable: "Autore",
-                        principalColumn: "AutoreId",
+                        principalColumns: new[] { "Cognome", "Nome", "DataNascita" },
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AutoriLibro_Libro_LibroID",
-                        column: x => x.LibroID,
+                        name: "FK_AutoreLibro_Libro_LibriLibroID",
+                        column: x => x.LibriLibroID,
                         principalTable: "Libro",
                         principalColumn: "LibroID",
                         onDelete: ReferentialAction.Cascade);
@@ -108,9 +109,9 @@ namespace csharp_bibliotecaMvc_due.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AutoriLibro_LibroID",
-                table: "AutoriLibro",
-                column: "LibroID");
+                name: "IX_AutoreLibro_AutoriCognome_AutoriNome_AutoriDataNascita",
+                table: "AutoreLibro",
+                columns: new[] { "AutoriCognome", "AutoriNome", "AutoriDataNascita" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prestito_LibroID",
@@ -127,7 +128,7 @@ namespace csharp_bibliotecaMvc_due.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AutoriLibro");
+                name: "AutoreLibro");
 
             migrationBuilder.DropTable(
                 name: "Prestito");

@@ -43,7 +43,7 @@ namespace csharp_bibliotecaMvc_due.Migrations
                     b.ToTable("AutoreLibro");
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Autore", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Autore", b =>
                 {
                     b.Property<string>("Cognome")
                         .HasColumnType("nvarchar(450)")
@@ -62,7 +62,7 @@ namespace csharp_bibliotecaMvc_due.Migrations
                     b.ToTable("Autore", (string)null);
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Libro", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Libro", b =>
                 {
                     b.Property<int>("LibroID")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace csharp_bibliotecaMvc_due.Migrations
                     b.ToTable("Libro", (string)null);
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Prestito", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Prestito", b =>
                 {
                     b.Property<int>("PrestitoID")
                         .HasColumnType("int");
@@ -116,7 +116,7 @@ namespace csharp_bibliotecaMvc_due.Migrations
                     b.ToTable("Prestito", (string)null);
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Utente", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Utente", b =>
                 {
                     b.Property<int>("UtenteID")
                         .ValueGeneratedOnAdd()
@@ -151,28 +151,28 @@ namespace csharp_bibliotecaMvc_due.Migrations
 
             modelBuilder.Entity("AutoreLibro", b =>
                 {
-                    b.HasOne("csharp_bibliotecaMvc.Models.Libro", null)
+                    b.HasOne("csharp_bibliotecaMvc_due.Models.Libro", null)
                         .WithMany()
                         .HasForeignKey("LibriLibroID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("csharp_bibliotecaMvc.Models.Autore", null)
+                    b.HasOne("csharp_bibliotecaMvc_due.Models.Autore", null)
                         .WithMany()
                         .HasForeignKey("AutoriCognome", "AutoriNome", "AutoriDataNascita")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Prestito", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Prestito", b =>
                 {
-                    b.HasOne("csharp_bibliotecaMvc.Models.Libro", "Libro")
+                    b.HasOne("csharp_bibliotecaMvc_due.Models.Libro", "Libro")
                         .WithOne("Prestito")
-                        .HasForeignKey("csharp_bibliotecaMvc.Models.Prestito", "LibroID")
+                        .HasForeignKey("csharp_bibliotecaMvc_due.Models.Prestito", "LibroID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("csharp_bibliotecaMvc.Models.Utente", "Utente")
+                    b.HasOne("csharp_bibliotecaMvc_due.Models.Utente", "Utente")
                         .WithMany("Prestito")
                         .HasForeignKey("UtenteID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,12 +183,12 @@ namespace csharp_bibliotecaMvc_due.Migrations
                     b.Navigation("Utente");
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Libro", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Libro", b =>
                 {
                     b.Navigation("Prestito");
                 });
 
-            modelBuilder.Entity("csharp_bibliotecaMvc.Models.Utente", b =>
+            modelBuilder.Entity("csharp_bibliotecaMvc_due.Models.Utente", b =>
                 {
                     b.Navigation("Prestito");
                 });
